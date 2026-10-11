@@ -66,13 +66,24 @@ select{padding:8px;border-radius:8px;border:1px solid var(--line);background:var
 footer button{background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:8px 14px;font-size:14px}
 #resp textarea{width:100%;min-height:120px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px}
 #resp button{padding:10px 14px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text);font-size:15px;margin-top:8px}
+#faj{font-size:14px;margin-top:4px}
+#faj button{background:#0d3b66;color:#fff;border:none;border-radius:6px;padding:4px 10px;margin-left:6px;font-size:13px}
+#faj .sm{font-size:13px;margin-top:4px;line-height:1.5}
+.celda.hoyf{box-shadow:0 0 0 2px #f9a825}
+#lock{display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:var(--bg);align-items:center;justify-content:center}
+#lock.on{display:flex}
+#lock .lk{width:100%;max-width:320px;padding:20px;text-align:center}
+#lock input{width:100%;margin-top:10px;padding:12px;font-size:20px;text-align:center;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text)}
+#lock button{width:100%;margin-top:12px;padding:12px;font-size:17px;border:none;border-radius:8px;background:var(--accent);color:#fff}
+#le{color:#ef5350;min-height:20px;margin-top:8px}
 </style>
 </head>
 <body>
-<header><h1>Pabellón</h1><div id="resumen"></div><input id="q" type="search" placeholder="Buscar persona…" autocomplete="off"><button id="qb">Buscar</button><div id="res"></div></header>
+<header><h1>Pabellón</h1><div id="resumen"></div><div id="faj"></div><input id="q" type="search" placeholder="Buscar persona…" autocomplete="off"><button id="qb">Buscar</button><div id="res"></div></header>
 <main id="celdas"></main>
-<footer><button id="bk">Respaldo / Restaurar</button> <button id="vaciar">Vaciar todo</button></footer>
+<footer><button id="bk">Respaldo / Restaurar</button> <button id="bl">Bloquear</button> <button id="cc">Cambiar clave</button> <button id="vaciar">Vaciar todo</button></footer>
 <div id="resp" style="display:none;padding:12px"><p>Copiá este texto y guardalo (por ejemplo en una nota). Para restaurar, pegá el texto acá y tocá Restaurar.</p><textarea id="rt"></textarea><button id="rok">Restaurar desde este texto</button> <button id="rno">Cerrar</button></div>
+<div id="lock" class="on"></div>
 <div id="ficha"></div>
 <script>
 var N=14, MAX=5, KEY="pabellon:celdas";
@@ -138,9 +149,9 @@ function dibujar(){
     total+=c.length;
     var llena=c.length>=MAX;
     var div=document.createElement("section");
-    div.className="celda "+(c.length>=MAX?"rojo":c.length>=4?"amarillo":"verde");
+    div.className="celda "+(c.length>=MAX?"rojo":c.length>=4?"amarillo":"verde")+(i+1===celdaFajina(0)?" hoyf":"");
     var h=document.createElement("h2");
-    h.innerHTML="<span>C"+(i+1)+"</span><span class='cupo'>"+c.length+"/"+MAX+(llena?" LLENA":"")+"</span>";
+    h.innerHTML="<span>C"+(i+1)+(i+1===celdaFajina(0)?" 🧹":"")+"</span><span class='cupo'>"+c.length+"/"+MAX+(llena?" LLENA":"")+"</span>";
     div.appendChild(h);
     var ul=document.createElement("ul");
     if(!c.length){var e=document.createElement("li");e.innerHTML="<span class='vacio'>Vacía</span>";ul.appendChild(e);}
@@ -172,7 +183,7 @@ function dibujar(){
     div.appendChild(inp);lp.appendChild(dp);lc.appendChild(dc);div.appendChild(lp);div.appendChild(lc);div.appendChild(a);inp.onkeydown=function(ev){if(ev.key==="Enter"&&a.onclick)a.onclick();};
     cont.appendChild(div);
   });
-  document.getElementById("resumen").textContent="Capacidad "+(N*MAX)+" · Ocupados "+total+" · Libres "+(N*MAX-total);buscar();
+  document.getElementById("resumen").textContent="Capacidad "+(N*MAX)+" · Ocupados "+total+" · Libres "+(N*MAX-total);buscar();renderFaj();
 }
 document.getElementById("vaciar").onclick=function(){
   var bt=document.getElementById("vaciar");if(bt.dataset.ok){datos=[];for(var i=0;i<N;i++)datos.push([]);guardar();dibujar();bt.dataset.ok="";bt.textContent="Vaciar todo";}else{bt.dataset.ok="1";bt.textContent="Tocá de nuevo para vaciar TODO";setTimeout(function(){bt.dataset.ok="";bt.textContent="Vaciar todo";},3000);}
@@ -183,6 +194,44 @@ document.getElementById('rok').onclick=function(){try{var d=JSON.parse(document.
 document.getElementById('rno').onclick=function(){document.getElementById('resp').style.display='none';};
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
+
+var verSem=false;
+function celdaFajina(off){var EXC=[13],t=new Date(),a=Date.UTC(2026,9,10),u=Date.UTC(t.getFullYear(),t.getMonth(),t.getDate()+off),d=Math.round((u-a)/86400000),L=[],i;for(i=1;i<=N;i++){if(EXC.indexOf(i)<0)L.push(i);}var k=(L.indexOf(10)+d)%L.length;if(k<0)k+=L.length;return L[k];}
+function renderFaj(){
+  var f=document.getElementById("faj"),dias=["dom","lun","mar","mié","jue","vie","sáb"];
+  var x="Fajina hoy: <b>C"+celdaFajina(0)+"</b> · mañana: <b>C"+celdaFajina(1)+"</b> <button id='sem'>"+(verSem?"Ocultar":"Semana")+"</button>";
+  if(verSem){x+="<div class='sm'>";for(var i=0;i<7;i++){var t=new Date();t.setDate(t.getDate()+i);x+=dias[t.getDay()]+" "+t.getDate()+"/"+(t.getMonth()+1)+": C"+celdaFajina(i)+"<br>";}x+="</div>";}
+  f.innerHTML=x;
+  document.getElementById("sem").onclick=function(){verSem=!verSem;renderFaj();};
+}
+var PK="pabellon:pin";
+function sha(s){var b=new TextEncoder().encode("pab|"+s);return crypto.subtle.digest("SHA-256",b).then(function(h){return Array.from(new Uint8Array(h)).map(function(x){return ("0"+x.toString(16)).slice(-2);}).join("");});}
+function guardado(){try{return localStorage.getItem(PK);}catch(e){return null;}}
+function mostrarLock(mode){
+  var L=document.getElementById("lock"),nuevo=(mode==="new");
+  L.innerHTML="<div class='lk'><h2>Pabellón</h2><p id='lm'></p><input id='p1' type='password' inputmode='numeric' maxlength='8'><input id='p2' type='password' inputmode='numeric' maxlength='8' placeholder='Repetir clave'><div id='le'></div><button id='lb'></button></div>";
+  L.className="on";
+  document.getElementById("lm").textContent=nuevo?"Creá una clave de 4 a 8 números para proteger la app.":"Ingresá tu clave.";
+  document.getElementById("p1").placeholder=nuevo?"Clave nueva":"Clave";
+  document.getElementById("p2").style.display=nuevo?"block":"none";
+  document.getElementById("lb").textContent=nuevo?"Guardar clave":"Entrar";
+  var err=function(t){document.getElementById("le").textContent=t;};
+  document.getElementById("lb").onclick=function(){
+    var a=document.getElementById("p1").value;
+    if(!/^[0-9]{4,8}$/.test(a)){err("La clave debe tener de 4 a 8 números.");return;}
+    if(nuevo){
+      if(a!==document.getElementById("p2").value){err("Las dos claves no coinciden.");return;}
+      sha(a).then(function(h){try{localStorage.setItem(PK,h);}catch(e){}L.className="";});
+    }else{
+      sha(a).then(function(h){if(h===guardado()){L.className="";}else{err("Clave incorrecta.");}});
+    }
+  };
+}
+var oculto=0;
+document.addEventListener("visibilitychange",function(){if(document.hidden){oculto=Date.now();}else{dibujar();if(oculto&&Date.now()-oculto>120000&&guardado()){mostrarLock("ask");}}});
+document.getElementById("bl").onclick=function(){mostrarLock(guardado()?"ask":"new");};
+document.getElementById("cc").onclick=function(){mostrarLock("new");};
+mostrarLock(guardado()?"ask":"new");
 </script>
 </body>
 </html>
