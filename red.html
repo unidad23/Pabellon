@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<title>RED - Mago que abre puertas y materializa</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a1931">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAADTUlEQVR42u3dzU3jQBiAYTKytBKpgBY4kWbSBrXQRpoJJy5bwFaQ+x6QUJTwYxzb830zz6u9gJA2GR7PjGMnbO4fdnfS1IohEEACSAAJIAkgASSABJAEkAASQGq0wRCcdzocx/zYdu8KtBlIAAkgASSAJIAEkAASQBJAAkgACSApKaCR18abL/I4lOCjxlDwcRgccLkkRbsVqcTX07On+KNRgo9Xz4ZSjEaJM1jfj0tvhn4cjSADUuIPliKPWwhAIzeG/ThLdG9/cczR0wIgb5RJeoQEmoEsZBmPt5JxXFo1lPFtjS6m0tMWoD4nobxPJ+IMZDNUffoZP7ZD9gN33jGtskDEWbwmHJOl80PN1ufjYUyb0eNuontYyKo/+Hc3tzyM0GdhNkPLTT9zXY71AVN9LV6zH2yljYMv3SS0vp6F7gBJ8EJie4bWfKi373LSA0q0Jw219VnnprMhy1A2g2PpxWvlgdok+pOXDXyE6nJPYXY3Ix9DaxdTg78CGfmEvP0Z6PvjLNeL17c/kaXRtDkDffWs0l36uOWJxHlLRpQZyE2GeVfbAR2lPI1Hp40KPUoGiB6A6FGNPdCFnqfnx5aG8vXlzQwkRQVk8QJIqgTI9AOQBNCSbfe7Dj+kxrsynMObgQSQABJAEkACSAAJIAkgASSABJAEkAASQAJIAkgACSABJIAkgASQABJAEkACSAAJIAkgASSABJAEkAASQAJIAEmT8zG/n3f9sb2N/W0hgNajc/59jCxhU/SM/wGA6LljCKCl9DAEkAASQHnXL6sYQAJIAAkgAaRJFyhc0wBIAAmgjKuY9Qug6SzoAWg6DnouckPZ50TckQjQ2if2ljAJIAEkgASQBJAAEkACSAJIAAkgASQBJIAEkAASQBJAAkgACSAJIAEkgASQBJAAEkACSAJIAAkgASSAJIAEkABSf/mY33l6en78++/Px5enwxEgTW+7351/2bAngGarn1mnwh7o4ogUQBJASgTIKmYTPXPXf1JJZiCTEEAMZW67373/W+e/29w/VPiN9vmSSd3j87djPpJgHUAMVZ/afxz/6IAwCrUxuP5F5ACEUcwN5elwzARIzsIEkASQABJAAkgCSAAJIAEkASSAFK3/9uNGKPXh9V4AAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAADTUlEQVR42u3dzU3jQBiAYTKytBKpgBY4kWbSBrXQRpoJJy5bwFaQ+x6QUJTwYxzb830zz6u9gJA2GR7PjGMnbO4fdnfS1IohEEACSAAJIAkgASSABJAEkAASQGq0wRCcdzocx/zYdu8KtBlIAAkgASSAJIAEkAASQBJAAkgACSApKaCR18abL/I4lOCjxlDwcRgccLkkRbsVqcTX07On+KNRgo9Xz4ZSjEaJM1jfj0tvhn4cjSADUuIPliKPWwhAIzeG/ThLdG9/cczR0wIgb5RJeoQEmoEsZBmPt5JxXFo1lPFtjS6m0tMWoD4nobxPJ+IMZDNUffoZP7ZD9gN33jGtskDEWbwmHJOl80PN1ufjYUyb0eNuontYyKo/+Hc3tzyM0GdhNkPLTT9zXY71AVN9LV6zH2yljYMv3SS0vp6F7gBJ8EJie4bWfKi373LSA0q0Jw219VnnprMhy1A2g2PpxWvlgdok+pOXDXyE6nJPYXY3Ix9DaxdTg78CGfmEvP0Z6PvjLNeL17c/kaXRtDkDffWs0l36uOWJxHlLRpQZyE2GeVfbAR2lPI1Hp40KPUoGiB6A6FGNPdCFnqfnx5aG8vXlzQwkRQVk8QJIqgTI9AOQBNCSbfe7Dj+kxrsynMObgQSQABJAEkACSAAJIAkgASSABJAEkAASQAJIAkgACSABJIAkgASQABJAEkACSAAJIAkgASSABJAEkAASQAJIAEmT8zG/n3f9sb2N/W0hgNajc/59jCxhU/SM/wGA6LljCKCl9DAEkAASQHnXL6sYQAJIAAkgAaRJFyhc0wBIAAmgjKuY9Qug6SzoAWg6DnouckPZ50TckQjQ2if2ljAJIAEkgASQBJAAEkACSAJIAAkgASQBJIAEkAASQBJAAkgACSAJIAEkgASQBJAAEkACSAJIAAkgASSAJIAEkABSf/mY33l6en78++/Px5enwxEgTW+7351/2bAngGarn1mnwh7o4ogUQBJASgTIKmYTPXPXf1JJZiCTEEAMZW67373/W+e/29w/VPiN9vmSSd3j87djPpJgHUAMVZ/afxz/6IAwCrUxuP5F5ACEUcwN5elwzARIzsIEkASQABJAAkgCSAAJIAEkASSAFK3/9uNGKPXh9V4AAAAASUVORK5CYII=">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=Newsreader:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a1931;--card:#152c4b;--bone:#f5f5f0;--am:#ffc300;--am2:#ffd54a;--ln:rgba(255,255,255,.16);--ok:#4ade80;--no:#f87171;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--bone);font:16px/1.45 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:Newsreader,Georgia,serif;margin:6px 0;line-height:1.1}h2{font-size:22px}h3{font-size:19px}
+.wrap{max-width:760px;margin:0 auto;padding:12px}
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:rgba(10,25,49,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln);padding:8px 12px;display:flex;align-items:center;gap:10px}
+.lg{width:42px;height:42px;border-radius:11px;background:var(--am);color:var(--bg);display:flex;align-items:center;justify-content:center;flex:none}
+.fl{flex:1;min-width:0}.fl b{font-size:16px}.fl span{display:block}
+.mu{opacity:.65}.s{font-size:12px}.up{text-transform:uppercase;letter-spacing:.08em}.am{color:var(--am)}.no{color:var(--no)}.okt{color:var(--ok);font-weight:600}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:14px;margin-bottom:12px}
+.bone{background:var(--bone);color:var(--bg);border-radius:20px;padding:16px;margin-bottom:12px}
+.box{border-radius:14px;padding:12px;margin:10px 0;background:rgba(10,25,49,.07)}.box.dk{background:var(--bg);color:var(--bone)}.box.ol{background:none;border:2px solid var(--bg)}
+.lb{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.7}.lb.am{color:var(--am);opacity:1}
+.b{font:inherit;font-weight:700;border-radius:12px;border:2px solid var(--ln);background:transparent;color:var(--bone);padding:12px 16px;min-height:46px;margin:4px 4px 4px 0}
+.b.am{background:var(--am);border-color:var(--am);color:var(--bg)}.b.bn{background:var(--bone);border-color:var(--bone);color:var(--bg)}.b.dk{background:var(--bg);border-color:var(--bg);color:var(--bone)}.b.ok{background:#16a34a;border-color:#16a34a;color:#fff}.b.sm{padding:6px 12px;min-height:36px;font-size:13px;border-radius:999px}.b.big{width:100%}
+.role{display:block;width:100%;text-align:left;font:inherit;border:3px solid transparent;border-radius:16px;padding:14px;margin:0 0 10px}.role b{display:block;font-size:18px}.role span{font-size:13px;opacity:.8}.role.bn{background:var(--bone);color:var(--bg)}.role.am{background:var(--am);color:var(--bg)}.role.sel{border-color:#fff;box-shadow:0 0 0 3px var(--am2)}
+input,textarea,select{width:100%;font:inherit;padding:12px;margin:4px 0 8px;border-radius:12px;border:2px solid var(--ln);background:rgba(255,255,255,.08);color:var(--bone)}
+select option{color:#111}
+.bone input,.bone textarea,.bone select{background:#fff;color:var(--bg);border-color:rgba(10,25,49,.15)}textarea{min-height:90px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px}.chips .b{white-space:nowrap;min-height:38px;padding:8px 14px;border-radius:999px;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.chips .b.on{background:var(--am);border-color:var(--am);color:var(--bg)}
+.row{display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--ln);border-radius:999px;padding:3px 10px}
+.chip{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;margin:2px 4px 2px 0;background:rgba(128,128,128,.25)}.chip.on{background:#16a34a;color:#fff}
+.bar{height:10px;background:var(--bg);border-radius:6px;overflow:hidden;margin:6px 0}.bar i{display:block;height:100%;background:var(--am)}
+.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin:6px 0}
+.resp,.msg{background:#fff;color:var(--bg);border-radius:12px;padding:10px;margin:8px 0;white-space:pre-wrap}
+.card .resp{background:rgba(255,255,255,.08);color:var(--bone)}
+.x{border:none;background:none;color:var(--no);font-size:15px}
+.ov{position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;padding:16px;overflow-y:auto}.mod{width:100%;max-width:420px;margin:0}.b.lt{color:var(--bg);border-color:rgba(10,25,49,.3)}.b.rd{color:var(--no);border-color:var(--no);background:transparent}
+.ad{border:1px dashed var(--ln);text-align:center;padding:14px;margin-top:14px;border-radius:12px;font-size:13px;opacity:.6}
+.brand{display:flex;gap:12px;align-items:center;margin:14px 0 18px}.tt{font-weight:700;font-size:17px;line-height:1.15}.hero{font-size:40px;margin:6px 0 10px}
+</style></head><body><div id="app"></div>
+<script>
+var KEY="red:v2",N=6,EST={prog:"Programada",curso:"En curso",fin:"Finalizada"},LR="m",S,U=null,P=0,TAB="clases",ERR="",SEL=-1,PO=-1,ED=0,UP=0,SC=-1,NK=null,NT="",EC=-1,DC=-1,LG=0,LN="";
+function $(i){return document.getElementById(i);}
+function E(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function rid(){return Math.random().toString(36).slice(2,9);}
+function hoy(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)).slice(-2)+"-"+("0"+d.getDate()).slice(-2);}
+function now(){return new Date().toISOString();}
+function fd(s){return s?s.slice(8,10)+"/"+s.slice(5,7)+"/"+s.slice(0,4):"-";}
+function nm(s){return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f\s]/g,"");}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function sha(s){return crypto.subtle.digest("SHA-256",new TextEncoder().encode("red|"+s)).then(function(b){return Array.from(new Uint8Array(b)).map(function(x){return ("0"+x.toString(16)).slice(-2);}).join("");});}
+function pw(id,ph){return '<div style="position:relative"><input id="'+id+'" type="password" placeholder="'+ph+'" autocapitalize="none" autocorrect="off" spellcheck="false" style="padding-right:50px"><button type="button" onclick="ver(\''+id+'\')" aria-label="Mostrar u ocultar la clave" style="position:absolute;right:4px;top:6px;border:none;background:none;font-size:22px;padding:6px 8px">\ud83d\udc41</button></div>';}
+function ver(id){var e=$(id);e.type=e.type==="password"?"text":"password";}
+function logo(z){return '<svg width="'+z+'" height="'+z+'" viewBox="0 0 28 28" fill="none" aria-label="Logo"><g stroke="currentColor" stroke-linecap="round"><path d="M14 2v4" stroke-width="2"/><path d="M7 4.5L9.5 8M21 4.5L18.5 8" stroke-width="1.6"/></g><rect x="5" y="8" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M6 9h10v16H6" fill="currentColor" fill-opacity=".15" stroke="currentColor" stroke-width="1.6"/><circle cx="14" cy="17" r="1.2" fill="currentColor"/><path d="M16 10l10-4v20l-10-2z" fill="currentColor" fill-opacity=".25"/></svg>';}
+function bar(p){return '<div class="bar"><i style="width:'+p+'%"></i></div>';}
+function chip(l,v){return '<span class="chip'+(v?' on':'')+'">'+(v?'\u2713 ':'')+l+'</span>';}
+async function init(){
+  try{var r=localStorage.getItem(KEY);if(r)S=JSON.parse(r);}catch(e){}
+  if(!S){var h=await sha("1234");
+    S={u:[{id:"d1",n:"maestro",r:"m",k:h},{id:"a1",n:"alumno1",r:"a",p:0,k:h},{id:"a2",n:"alumno2",r:"a",p:0,k:h},{id:"a3",n:"alumno3",r:"a",p:0,k:h}],c:[],g:{},ch:[],cu:{},nota:null};
+    S.c.push({id:rid(),p:0,t:"Clase 1 - Descubrir un para qué",x:"El sentido no se inventa: se descubre. Aparece cuando nos preguntamos qué espera la vida de nosotros hoy, en esta situación concreta.",e:"Durante 10 minutos, en silencio, escribí qué le dirías a alguien para explicarle por qué vale la pena seguir adelante.",ta:"Anotá 3 cosas o personas que todavía esperan algo de vos.",f:hoy(),est:"prog",po:[]});
+    S.c.push({id:rid(),p:0,t:"Clase 2 - Libertad interior",x:"Entre lo que nos pasa y lo que hacemos hay un espacio. En ese espacio está nuestra libertad de elegir la actitud.",e:"Cuando sientas un impulso fuerte, detenete 6 segundos y respirá. Preguntate qué haría la mejor versión de vos.",ta:"Contá una situación de esta semana donde elegiste responder distinto.",f:hoy(),est:"prog",po:[]});
+    save();}
+  S.u.forEach(function(u){if(u.n==="docente")u.n="maestro";});
+  render();
+}
+function setLR(i){LR=i?"a":"m";ERR="";LN="";LG=1;render();setTimeout(function(){var e=$("ln");if(e)e.focus();},60);}
+async function entrar(){
+  var n=nm($("ln").value),h=await sha($("lk").value);
+  var v=S.u.find(function(x){return x.r===LR&&nm(x.n)===n;}),u=v&&v.k===h?v:null;
+  if(!u){LN=$("ln").value;ERR=v?"PIN incorrecto.":"No existe ese usuario. Revisá cómo está escrito (por ejemplo: alumno1).";return render();}
+  ERR="";LG=0;LN="";U=u;u.last=now();P=u.r==="a"?u.p:0;TAB="clases";SEL=-1;PO=-1;ED=0;UP=0;SC=-1;save();render();
+}
+function salir(){U=null;NK=null;NT="";ERR="";SEL=-1;EC=-1;DC=-1;LG=0;render();}
+function acepto(){U.acc=now();save();render();}
+function setP(i){P=i;SEL=-1;PO=-1;ED=0;SC=-1;EC=-1;DC=-1;UP=0;render();}
+function setT(t){TAB=t;ERR="";SEL=-1;PO=-1;ED=0;UP=0;SC=-1;EC=-1;DC=-1;render();}
+function G(c,u){return S.g[c+"|"+u]||{};}
+function cl(){var a=[];S.c.forEach(function(c,i){if(c.p===P)a.unshift(i);});return a;}
+function als(p){return S.u.filter(function(u){return u.r==="a"&&u.p===p;});}
+function nCom(c){return S.ch.filter(function(x){return x.cid===c.id;}).length;}
+function stats(p){
+  var al=als(p),cs=S.c.filter(function(c){return c.p===p;}),ter=0,hs=0;
+  al.forEach(function(u){var n=cs.filter(function(c){return G(c.id,u.id).he;}).length;hs+=n;if(cs.length&&n===cs.length)ter++;});
+  return {a:al.length,i:al.filter(function(u){return u.last;}).length,t:ter,pc:al.length&&cs.length?Math.round(100*hs/(al.length*cs.length)):0,c:cs.length};
+}
+/* ---------- pantallas ---------- */
+function modalL(){
+  return '<div class="ov"><div class="bone mod"><h2>Entrar como '+(LR==="m"?"Maestro":"Alumno")+'</h2><input id="ln" value="'+E(LN)+'" placeholder="Nombre de usuario" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false">'+pw("lk","PIN")+'<div class="no">'+E(ERR)+'</div><button class="b dk big" onclick="entrar()">ENTRAR</button><button class="b lt big" onclick="LG=0;LN=\'\';ERR=\'\';render()">CANCELAR</button><p class="s" style="opacity:.6;margin:6px 0 0">Prueba: usuarios maestro, alumno1, alumno2, alumno3. PIN 1234, todo junto y sin espacios.</p></div></div>';
+}
+function loginV(){
+  return '<div class="wrap"><div class="brand"><div class="lg">'+logo(30)+'</div><div><div class="mu s up">Sistema de gestión educativa y de sentido</div><div class="tt">RED - Mago que abre puertas y materializa</div></div></div>'+
+  '<h1 class="hero">El sentido <span class="am">abre puertas</span>.</h1><p class="mu">Clases, ejercicios y un espacio para que cada uno escriba su propio sentido.</p>'+
+  '<div class="card"><h2>¿Cómo vas a entrar hoy?</h2><button class="role bn" onclick="setLR(0)"><b>Soy Maestro</b></button><button class="role am" onclick="setLR(1)"><b>Soy Alumno</b></button></div></div>'+(LG?modalL():'');
+}
+function normasV(){
+  return '<div class="wrap"><div class="brand"><div class="lg">'+logo(30)+'</div><div class="tt">Normas y condiciones</div></div><div class="card"><p>Al usar RED aceptás que:</p><p>1. Tu cuenta es personal y no la compartís.</p><p>2. Se registra cuándo abrís una clase, qué leés y qué tareas entregás.</p><p>3. Los maestros de tu pabellón ven ese avance.</p><p>4. Respetás a tus compañeros y no compartís sus datos.</p><p class="mu s">Texto provisorio: se ajusta antes de usar la app con personas reales.</p><button class="b am big" onclick="acepto()">ACEPTO</button><button class="b big" onclick="salir()">NO ACEPTO</button></div></div>';
+}
+function hdr(){
+  return '<header class="hd"><div class="lg">'+logo(26)+'</div><div class="fl"><b>RED</b><span class="mu s up">'+(U.r==="m"?"Maestro":"Alumno")+' · '+E(U.n)+'</span></div><button class="b sm" onclick="salir()">SALIR</button></header>';
+}
+function formC(c,i){
+  var n=!c;c=c||{t:"",x:"",lf:"",lt:"",e:"",ta:"",f:hoy()};
+  return '<div class="bone"><h3>'+(n?"Subir clase nueva":"Editar clase")+'</h3>'+
+  (n?'<div class="lb">Destino</div><select id="cd"><option value="cur">Pabellón '+(P+1)+'</option><option value="all">Todos los pabellones</option></select>':'')+
+  '<div class="lb">Título</div><input id="ct" value="'+E(c.t)+'" placeholder="Ej: Clase 3 - Los tres pilares de la logoterapia">'+
+  '<div class="lb">Contenido de la clase</div><textarea id="cx" placeholder="Lo que se enseña en la clase">'+E(c.x)+'</textarea>'+
+  '<div class="lb">Lectura: autor, libro y páginas</div><input id="lf" value="'+E(c.lf)+'" placeholder="Ej: Autor, libro, págs. 10 a 14">'+
+  '<div class="lb">Texto de lectura</div><textarea id="lt" style="min-height:170px" placeholder="Pegá acá el fragmento de lectura">'+E(c.lt)+'</textarea>'+
+  '<p class="s" style="opacity:.7;margin:0 0 6px">Usá solo un fragmento breve y dejá siempre indicada la fuente.</p>'+
+  '<div class="lb">Ejercicio en clase</div><textarea id="ce">'+E(c.e)+'</textarea><div class="lb">Tarea</div><textarea id="ca">'+E(c.ta)+'</textarea><div class="lb">Fecha</div><input id="cf" type="date" value="'+E(c.f)+'">'+
+  '<button class="b dk big" onclick="saveC('+(n?-1:i)+')">'+(n?"PUBLICAR CLASE":"GUARDAR CAMBIOS")+'</button>'+(n?'':'<button class="b lt big" onclick="EC=-1;render()">CANCELAR</button>')+'</div>';
+}
+function saveC(i){
+  var t=$("ct").value.trim(),x=$("cx").value.trim(),lt=$("lt").value.trim();if(!t||(!x&&!lt))return;
+  var d={t:t,x:x,lf:$("lf").value.trim(),lt:lt,e:$("ce").value,ta:$("ca").value,f:$("cf").value||hoy()};
+  if(i>=0){Object.assign(S.c[i],d);EC=-1;}
+  else{var ps=$("cd").value==="all"?[0,1,2,3,4,5]:[P];ps.forEach(function(p){S.c.push(Object.assign({id:rid(),p:p,est:"prog",po:[]},d));});UP=0;}
+  save();render();
+}
+function delC(i){
+  var id=S.c[i].id;S.c.splice(i,1);
+  [S.g,S.cu].forEach(function(o){Object.keys(o).forEach(function(k){if(k.indexOf(id+"|")===0)delete o[k];});});
+  S.ch=S.ch.filter(function(x){return x.cid!==id;});SEL=-1;DC=-1;save();render();
+}
+function chatV(c,i){
+  var cm=S.ch.filter(function(x){return x.cid===c.id;});
+  return '<div class="box dk" style="margin-top:14px"><div class="lb am">Chat de expresión · '+cm.length+'</div>'+cm.map(function(x){return '<div class="msg"><div class="row"><b>'+E(x.n)+'</b><span class="s" style="opacity:.6">'+fd(x.ts.slice(0,10))+(U.r==="m"?' <button class="x" onclick="delCom(\''+x.id+'\')" aria-label="Borrar">\u2715</button>':'')+'</span></div>'+E(x.tx)+'</div>';}).join("")+'<div class="row" style="flex-wrap:nowrap"><input id="cmt" placeholder="Escribí tu mensaje"><button class="b am" onclick="comentar('+i+')">ENVIAR</button></div></div>';
+}
+function comentar(i){var t=$("cmt").value.trim();if(!t)return;S.ch.push({id:rid(),cid:S.c[i].id,uid:U.id,n:U.r==="m"?"Maestro":U.n,tx:t,ts:now()});save();render();}
+function delCom(id){S.ch=S.ch.filter(function(x){return x.id!==id;});save();render();}
+function detV(i){
+  var c=S.c[i],m=U.r==="m",g=m?{}:G(c.id,U.id);
+  if(m&&EC===i)return formC(c,i);
+  var h='<button class="b sm" onclick="SEL=-1;ED=0;DC=-1;render()">\u2190 VOLVER</button><div class="bone" style="margin-top:10px"><div class="lb">'+EST[c.est]+' · '+fd(c.f)+'</div><h2>'+E(c.t)+'</h2>'+
+  (c.x?'<div class="lb" style="margin-top:8px">Contenido de la clase</div><p style="white-space:pre-wrap;margin-top:4px">'+E(c.x)+'</p>':'')+
+  (c.lt?'<div class="box"><div class="lb">Lectura'+(c.lf?' · '+E(c.lf):'')+'</div><div style="white-space:pre-wrap;margin-top:6px">'+E(c.lt)+'</div></div>':'')+
+  (c.e?'<div class="box dk"><div class="lb am">Ejercicio en clase</div>'+E(c.e)+'</div>':'')+(c.ta?'<div class="box ol"><div class="lb">Tarea</div>'+E(c.ta)+'</div>':'');
+  if(m){
+    h+='<button class="b dk" onclick="estC('+i+',\'curso\')">INICIAR CLASE</button><button class="b dk" onclick="estC('+i+',\'fin\')">FINALIZAR</button><button class="b lt" onclick="EC='+i+';render()">EDITAR CLASE</button>';
+    h+=DC===i?'<div class="no" style="margin-top:8px">¿Eliminar esta clase con sus respuestas y mensajes?</div><button class="b rd" onclick="delC('+i+')">SÍ, ELIMINAR</button><button class="b lt" onclick="DC=-1;render()">NO</button>':'<button class="b rd" onclick="DC='+i+';render()">ELIMINAR CLASE</button>';
+  }else{
+    h+='<button class="b '+(g.le?'ok':'dk')+'" onclick="leerC('+i+')">'+(g.le?'\u2713 MARCADA COMO LEÍDA':'MARCAR COMO LEÍDA')+'</button>';
+    if(g.he&&!ED)h+='<div class="okt" style="margin-top:10px">\u2713 Tarea entregada el '+fd(g.he.slice(0,10))+(g.m?' · corregida el '+fd(g.m.slice(0,10)):'')+'</div><div class="resp">'+E(g.r)+'</div><button class="b dk" onclick="ED=1;render()">CORREGIR MI RESPUESTA</button>';
+    else h+='<div class="lb" style="margin-top:10px">Mi tarea</div><textarea id="rt" placeholder="Escribí tu tarea acá">'+E(g.r||"")+'</textarea><button class="b am" onclick="entregarC('+i+')">'+(g.he?"GUARDAR CAMBIOS":"ENTREGAR TAREA")+'</button>'+(g.he?'<button class="b dk" onclick="ED=0;render()">CANCELAR</button>':'');
+  }
+  return h+chatV(c,i)+'</div>';
+}
+function estC(i,e){S.c[i].est=e;save();render();}
+function abrirC(i){var c=S.c[i],k=c.id+"|"+U.id,g=S.g[k]||(S.g[k]={});if(!g.ab)g.ab=now();SEL=i;ED=0;save();render();window.scrollTo(0,0);}
+function leerC(i){var k=S.c[i].id+"|"+U.id,g=S.g[k]||(S.g[k]={});g.le=g.le||now();save();render();}
+function entregarC(i){var r=$("rt").value.trim();if(!r)return;var k=S.c[i].id+"|"+U.id,g=S.g[k]||(S.g[k]={});g.m=g.he?now():null;g.he=g.he||now();g.r=r;ED=0;save();render();}
+function clasesDV(){
+  if(SEL>=0&&S.c[SEL]&&S.c[SEL].p===P)return detV(SEL);
+  var h='<div class="row"><h2>Clases subidas</h2><button class="b am" onclick="UP=!UP;render()">'+(UP?"CERRAR":"+ SUBIR CLASE")+'</button></div>'+(UP?formC():"");
+  var ix=cl();if(!ix.length)h+='<div class="card mu">Todavía no hay clases en este pabellón.</div>';
+  ix.forEach(function(i){var c=S.c[i];h+='<div class="card"><div class="row"><span class="pill">Pabellón '+(c.p+1)+' · '+fd(c.f)+'</span><span class="mu s">'+nCom(c)+' comentarios</span></div><h3>'+E(c.t)+'</h3><div class="mu clamp">'+E(c.x)+'</div><div class="row"><span class="pill">'+EST[c.est]+'</span><button class="b bn" onclick="SEL='+i+';render();window.scrollTo(0,0)">VER CLASE COMPLETA</button></div></div>';});
+  return h;
+}
+function clasesAV(){
+  if(SEL>=0&&S.c[SEL]&&S.c[SEL].p===P)return detV(SEL);
+  var ix=cl(),h='<div class="row"><h2>Mis clases</h2><span class="pill">'+ix.length+' disponibles</span></div>';
+  if(!ix.length)h+='<div class="card mu">Todavía no hay clases.</div>';
+  ix.forEach(function(i){var c=S.c[i],g=G(c.id,U.id);h+='<div class="card" onclick="abrirC('+i+')"><div class="row"><span class="pill">'+fd(c.f)+'</span><span class="pill">'+EST[c.est]+'</span></div><h3>'+E(c.t)+'</h3><div>'+chip("Abrió",g.ab)+chip("Leyó",g.le)+chip("Hecho",g.he)+'</div><button class="b bn big" style="margin-top:6px">ABRIR CLASE</button></div>';});
+  return h;
+}
+function seguimientoV(){
+  var ix=cl();if(!ix.length)return '<h2>Seguimiento</h2><div class="card mu">No hay clases en este pabellón.</div>';
+  if(SC<0||!S.c[SC]||S.c[SC].p!==P)SC=ix[0];
+  var c=S.c[SC],al=als(P),h='<h2>Quién abrió, leyó y entregó</h2><select onchange="SC=+this.value;render()">'+ix.map(function(i){return '<option value="'+i+'"'+(i===SC?" selected":"")+'>'+E(S.c[i].t)+'</option>';}).join("")+'</select>';
+  al.forEach(function(u){var g=G(c.id,u.id),nc=S.ch.filter(function(x){return x.cid===c.id&&x.uid===u.id;}).length;
+    h+='<div class="card"><div class="row"><b>'+E(u.n)+'</b><span class="mu s">'+(g.ab?"Abrió el "+fd(g.ab.slice(0,10)):"No abrió")+'</span></div><div>'+chip("Abrió",g.ab)+chip("Leyó",g.le)+chip("Entregó",g.he)+'<span class="pill">'+nc+' comentarios</span></div>'+(g.he?'<div class="resp">'+E(g.r)+(g.m?'<div class="s" style="opacity:.6">Corregida el '+fd(g.m.slice(0,10))+'</div>':'')+'</div>':'')+'</div>';});
+  if(!al.length)h+='<div class="card mu">No hay alumnos en este pabellón.</div>';
+  return h;
+}
+function alumnosV(){
+  var al=als(P),ing=al.filter(function(u){return u.last;}).length;
+  var h='<div class="card"><h3>Agregar alumno</h3><input id="an" placeholder="Nombre de usuario" autocapitalize="none" autocorrect="off" spellcheck="false">'+pw("ak","PIN inicial")+'<div class="no">'+E(ERR)+'</div><button class="b am big" onclick="addA()">CREAR ALUMNO</button></div><h2>Alumnos · '+ing+' de '+al.length+' ingresaron</h2>';
+  al.forEach(function(u){h+='<div class="card row"><b>'+E(u.n)+'</b><span class="'+(u.last?"okt":"no")+'">'+(u.last?"Ingresó "+fd(u.last.slice(0,10)):"No ingresó")+'</span></div>';});
+  if(!al.length)h+='<div class="card mu">No hay alumnos en este pabellón.</div>';
+  return h;
+}
+async function addA(){
+  var n=$("an").value.trim(),k=$("ak").value;
+  if(!n||k.length<4){ERR="Poné un nombre y un PIN de 4 o más caracteres.";return render();}
+  if(S.u.some(function(u){return nm(u.n)===nm(n);})){ERR="Ese nombre ya existe.";return render();}
+  S.u.push({id:rid(),n:n,r:"a",p:P,k:await sha(k)});ERR="";save();render();
+}
+function agendaV(){
+  var h="<h2>Agenda</h2>",reg="",ix=cl().slice().sort(function(a,b){return S.c[a].f<S.c[b].f?-1:1;});
+  ix.forEach(function(i){var c=S.c[i];
+    h+='<div class="card"><div class="row"><b>'+fd(c.f)+' · '+E(c.t)+'</b><button class="b sm" onclick="PO='+(PO===i?-1:i)+';ERR=\'\';render()">POSPONER</button></div>';
+    if(PO===i){var ms=S.u.filter(function(u){return u.r==="m";});
+      h+='<input id="pm" placeholder="Motivo (obligatorio)"><input id="pf" type="date"><select id="pq">'+ms.map(function(m){return '<option>'+E(m.n)+'</option>';}).join("")+'</select><div class="no">'+E(ERR)+'</div><button class="b am" onclick="posponer('+i+')">CONFIRMAR POSPOSICIÓN</button>';}
+    h+='</div>';
+    c.po.forEach(function(p){reg+='<div class="card"><b>'+E(c.t)+'</b><div class="mu s">'+fd(p.a)+' \u2192 '+fd(p.nf)+' · Motivo: '+E(p.m)+' · Pospone: '+E(p.q)+' · Registrado el '+fd(p.en.slice(0,10))+'</div></div>';});});
+  if(!ix.length)h+='<div class="card mu">No hay clases agendadas.</div>';
+  return h+'<h2>Registro de posposiciones</h2>'+(reg||'<div class="card mu">Sin posposiciones.</div>');
+}
+function posponer(i){
+  var m=$("pm").value.trim(),f=$("pf").value;
+  if(!m||!f){ERR="El motivo y la nueva fecha son obligatorios.";return render();}
+  var c=S.c[i];c.po.push({m:m,nf:f,q:$("pq").value,a:c.f,en:now()});c.f=f;c.est="prog";ERR="";PO=-1;save();render();
+}
+function pabellonesV(){
+  var A=0,I=0;for(var p=0;p<N;p++){var q=stats(p);A+=q.a;I+=q.i;}
+  var h='<h2>Red por pabellones</h2><div class="card"><div class="lb">Métricas vivas</div><div class="row"><div><div style="font-size:30px;font-weight:700">'+A+'</div><div class="mu s">Alumnos cargados</div></div><div><div style="font-size:30px;font-weight:700">'+I+'</div><div class="mu s">Ya ingresaron</div></div><div><div style="font-size:30px;font-weight:700">'+S.c.length+'</div><div class="mu s">Clases</div></div></div></div>';
+  for(var p2=0;p2<N;p2++){var s=stats(p2);h+='<div class="card"><div class="row"><b>Pabellón '+(p2+1)+'</b><span class="pill">'+s.c+' clases</span></div><div class="row mu s"><span>Entraron '+s.i+' de '+s.a+'</span><span>Terminaron '+s.t+' de '+s.a+'</span></div>'+bar(s.pc)+'<div class="s mu">Avance '+s.pc+'%</div></div>';}
+  return h;
+}
+function progresoV(){
+  var s=stats(P),cs=cl(),n=cs.filter(function(i){return G(S.c[i].id,U.id).he;}).length,pc=cs.length?Math.round(100*n/cs.length):0;
+  var h='<h2>Mi progreso</h2><div class="card"><div class="row"><span>Tareas entregadas</span><b>'+n+' de '+cs.length+'</b></div>'+bar(pc)+'</div><div class="card"><div class="lb" style="margin-bottom:8px">Detalle por clase</div>';
+  cs.forEach(function(i){var c=S.c[i],g=G(c.id,U.id);h+='<div style="margin:8px 0"><b>'+E(c.t)+'</b><div>'+chip("Abrió",g.ab)+chip("Leyó",g.le)+chip("Hecho",g.he)+'</div></div>';});
+  return h+'</div>';
+}
+function cuadernoAV(){
+  var ix=cl();if(!ix.length)return '<h2>Mi cuaderno</h2><div class="card mu">Todavía no hay clases.</div>';
+  if(SC<0||!S.c[SC]||S.c[SC].p!==P)SC=ix[0];
+  var k=S.c[SC].id+"|"+U.id;
+  return '<h2>Mi cuaderno</h2><p class="mu s">Tu espacio privado: otros alumnos no lo ven.</p><select onchange="SC=+this.value;render()">'+ix.map(function(i){return '<option value="'+i+'"'+(i===SC?" selected":"")+'>'+E(S.c[i].t)+'</option>';}).join("")+'</select><textarea id="cu" style="min-height:220px" placeholder="Escribí lo que quieras sobre esta clase">'+E(S.cu[k]||"")+'</textarea><div class="okt">'+E(ERR)+'</div><button class="b am" onclick="guardarCu()">GUARDAR</button>';
+}
+function guardarCu(){S.cu[S.c[SC].id+"|"+U.id]=$("cu").value;ERR="Guardado.";save();render();}
+function cuadernoDV(){
+  if(!NK)return '<h2>Cuaderno privado del maestro</h2><div class="card"><p class="mu s">Solo para vos. Se cifra con tu clave: si la olvidás, no se puede recuperar.</p>'+pw("nk",S.nota?"Clave del cuaderno":"Creá una clave para el cuaderno")+'<div class="no">'+E(ERR)+'</div><button class="b am big" onclick="abrirN()">'+(S.nota?"ABRIR":"CREAR CUADERNO")+'</button></div>';
+  return '<h2>Cuaderno privado del maestro</h2><textarea id="nt" style="min-height:240px">'+E(NT)+'</textarea><div class="okt">'+E(ERR)+'</div><button class="b am" onclick="guardarN()">GUARDAR</button><button class="b" onclick="NK=null;NT=\'\';ERR=\'\';render()">BLOQUEAR</button>';
+}
+async function kd(p,s){var k=await crypto.subtle.importKey("raw",new TextEncoder().encode(p),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt:s,iterations:100000,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);}
+function b64(a){return btoa(String.fromCharCode.apply(null,a));}
+function ub(s){return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0);});}
+async function cif(t){var iv=crypto.getRandomValues(new Uint8Array(12)),d=await crypto.subtle.encrypt({name:"AES-GCM",iv:iv},NK,new TextEncoder().encode(t));S.nota.i=b64(iv);S.nota.d=b64(new Uint8Array(d));save();}
+async function abrirN(){
+  var p=$("nk").value;if(p.length<4){ERR="Mínimo 4 caracteres.";return render();}
+  try{
+    if(!S.nota){S.nota={s:b64(crypto.getRandomValues(new Uint8Array(16)))};NK=await kd(p,ub(S.nota.s));await cif("");NT="";}
+    else{NK=await kd(p,ub(S.nota.s));NT=new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(S.nota.i)},NK,ub(S.nota.d)));}
+    ERR="";
+  }catch(e){NK=null;if(S.nota&&!S.nota.d)S.nota=null;ERR="Clave incorrecta.";}
+  render();
+}
+async function guardarN(){NT=$("nt").value;await cif(NT);ERR="Guardado.";render();}
+function render(){
+  var a=$("app");
+  if(!U){a.innerHTML=loginV();return;}
+  if(!U.acc){a.innerHTML=normasV();return;}
+  var m=U.r==="m",h=hdr()+'<main class="wrap">';
+  if(m){h+='<div class="chips">';for(var p=0;p<N;p++)h+='<button class="b'+(p===P?" on":"")+'" onclick="setP('+p+')">Pab. '+(p+1)+'</button>';h+='</div>';}
+  var tabs=m?[["clases","Clases"],["seguimiento","Seguimiento"],["alumnos","Alumnos"],["agenda","Agenda"],["pabellones","Pabellones"],["cuaderno","Cuaderno"]]:[["clases","Clases"],["cuaderno","Cuaderno"],["progreso","Progreso"]];
+  h+='<div class="chips">'+tabs.map(function(t){return '<button class="b'+(TAB===t[0]?" on":"")+'" onclick="setT(\''+t[0]+'\')">'+t[1]+'</button>';}).join("")+'</div>';
+  var V=m?{clases:clasesDV,seguimiento:seguimientoV,alumnos:alumnosV,agenda:agendaV,pabellones:pabellonesV,cuaderno:cuadernoDV}:{clases:clasesAV,cuaderno:cuadernoAV,progreso:progresoV};
+  h+=V[TAB]()+'<div class="ad">Espacio publicitario (reservado, sin activar)</div></main>';
+  a.innerHTML=h;
+}
+init();
+</script></body></html>
