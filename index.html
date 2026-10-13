@@ -76,10 +76,12 @@ footer button{background:none;border:1px solid var(--line);color:var(--muted);bo
 #lock input{width:100%;margin-top:10px;padding:12px;font-size:20px;text-align:center;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--text)}
 #lock button{width:100%;margin-top:12px;padding:12px;font-size:17px;border:none;border-radius:8px;background:var(--accent);color:#fff}
 #le{color:#ef5350;min-height:20px;margin-top:8px}
+#sync{font-size:13px;margin-top:5px}#sync .ok{color:#b9f6ca}#sync .no{color:#ffcdd2}
+#sync button{background:#0d3b66;color:#fff;border:none;border-radius:6px;padding:4px 10px;margin:2px 4px 2px 0;font-size:13px}#sync input{margin:4px 0}
 </style>
 </head>
 <body>
-<header><h1>Pabellón</h1><div id="resumen"></div><div id="faj"></div><input id="q" type="search" placeholder="Buscar persona…" autocomplete="off"><button id="qb">Buscar</button><div id="res"></div></header>
+<header><h1>Pabellón</h1><div id="resumen"></div><div id="faj"></div><div id="sync"><div id="sst"></div><div id="sfm"></div></div><input id="q" type="search" placeholder="Buscar persona…" autocomplete="off"><button id="qb">Buscar</button><div id="res"></div></header>
 <main id="celdas"></main>
 <footer><button id="bk">Respaldo / Restaurar</button> <button id="bl">Bloquear</button> <button id="cc">Cambiar clave</button> <button id="vaciar">Vaciar todo</button></footer>
 <div id="resp" style="display:none;padding:12px"><p>Copiá este texto y guardalo (por ejemplo en una nota). Para restaurar, pegá el texto acá y tocá Restaurar.</p><textarea id="rt"></textarea><button id="rok">Restaurar desde este texto</button> <button id="rno">Cerrar</button></div>
@@ -88,12 +90,16 @@ footer button{background:none;border:1px solid var(--line);color:var(--muted);bo
 <script>
 var N=14, MAX=5, KEY="pabellon:celdas";
 var moviendo=null;
+var API="https://bbfecevjjmrkraipfjjo.supabase.co/functions/v1/pabellon-estado",SV=0,ADM="",ADN="",OK=false,PEND=false,BUSY=false,TMR=null,MSG="Conectando…",CLS="";
+try{ADM=localStorage.getItem("pabellon:adm")||"";ADN=localStorage.getItem("pabellon:adn")||"";SV=parseInt(localStorage.getItem("pabellon:sv")||"0",10)||0;}catch(e){}
 var datos=cargar();
 function cargar(){
   try{var r=localStorage.getItem(KEY);if(r){var d=JSON.parse(r);if(Array.isArray(d)&&d.length===N)return d.map(function(c){return c.map(function(p){return typeof p==="string"?{n:p,p:hoy(),c:hoy()}:p;});});}}catch(e){}
   var v=[];for(var i=0;i<N;i++)v.push([]);return v;
 }
-function guardar(){try{localStorage.setItem(KEY,JSON.stringify(datos));}catch(e){}}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(datos));localStorage.setItem("pabellon:sv",String(SV));}catch(e){}}
+function guardar(){persist();if(ADM&&OK)programar();}
+function puedeEditar(){return !!(ADM&&OK);}
 function norm(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
 function buscar(){
   var q=norm(document.getElementById('q').value.trim()),r=document.getElementById('res');r.innerHTML='';
@@ -129,6 +135,7 @@ function abrirFicha(i,j){
   set('f_n',p.n);set('f_l',p.l);set('f_p',p.p);set('f_c',p.c);set('f_th',p.th);set('f_eh',p.eh);set('f_cr',p.cr);set('f_cc',p.cc);set('f_a',p.a);set('f_o',p.o);
   f.querySelector('h2').textContent=p.n;f.classList.add('on');f.scrollTop=0;try{history.pushState({ficha:1},'');}catch(e){}document.getElementById('f_back').onclick=cerrarFicha;
   document.getElementById('f_no').onclick=cerrarFicha;
+  if(!puedeEditar()){f.querySelectorAll('input,select,textarea').forEach(function(e){e.disabled=true;});document.getElementById('f_ok').style.display='none';}
   document.getElementById('f_ok').onclick=function(){
     var g=function(id){return document.getElementById(id).value;};
     var n=g('f_n').trim();if(!n)return;
@@ -143,7 +150,7 @@ function hoy(){var d=new Date();return d.getFullYear()+"-"+("0"+(d.getMonth()+1)
 function fmt(s){var a=(s||"").split("-");return a.length===3?a[2]+"/"+a[1]+"/"+a[0]:"s/d";}
 function antig(s){var a=(s||"").split("-");if(a.length!==3)return "";var d0=new Date(+a[0],+a[1]-1,+a[2]),t=new Date();t=new Date(t.getFullYear(),t.getMonth(),t.getDate());if(d0>t)return "fecha futura";var y=t.getFullYear()-d0.getFullYear(),m=t.getMonth()-d0.getMonth(),d=t.getDate()-d0.getDate();if(d<0){m--;d+=new Date(t.getFullYear(),t.getMonth(),0).getDate();}if(m<0){y--;m+=12;}if(y>0)return y+" a "+m+" m";if(m>0)return m+" m "+d+" d";return d+" d";}
 function dibujar(){
-  var cont=document.getElementById("celdas");cont.innerHTML="";
+  var PE=puedeEditar(),cont=document.getElementById("celdas");cont.innerHTML="";
   var total=0;
   datos.forEach(function(c,i){
     total+=c.length;
@@ -161,14 +168,14 @@ function dibujar(){
       var b=document.createElement("button");b.className="eg";b.textContent="Egresar";b.setAttribute("aria-label","Egresar a "+nombre.n);var m=document.createElement("button");m.className="mv";m.textContent="Mover";m.onclick=function(){moviendo={i:i,j:j};dibujar();};
       b.onclick=function(){if(b.dataset.ok){datos[i].splice(j,1);guardar();dibujar();}else{b.dataset.ok="1";b.textContent="¿Seguro?";setTimeout(function(){b.dataset.ok="";b.textContent="Egresar";},3000);}};
       var acc=document.createElement("span");acc.className="acc";
-      if(moviendo&&moviendo.i===i&&moviendo.j===j){
+      if(PE&&moviendo&&moviendo.i===i&&moviendo.j===j){
         var sel=document.createElement("select");
         var o0=document.createElement("option");o0.value="";o0.textContent="Mover a…";sel.appendChild(o0);
         datos.forEach(function(cc,k){if(k!==i&&cc.length<MAX){var o=document.createElement("option");o.value=k;o.textContent="C"+(k+1)+" ("+cc.length+"/"+MAX+")";sel.appendChild(o);}});
         sel.onchange=function(){if(sel.value!==""){var k=parseInt(sel.value,10);if(datos[k].length<MAX){var q=datos[i].splice(j,1)[0];q.c=hoy();datos[k].push(q);}moviendo=null;guardar();dibujar();}};
         var x=document.createElement("button");x.textContent="✕";x.onclick=function(){moviendo=null;dibujar();};
         acc.appendChild(sel);acc.appendChild(x);
-      }else{acc.appendChild(m);acc.appendChild(b);}
+      }else if(PE){acc.appendChild(m);acc.appendChild(b);}
       li.appendChild(s);li.appendChild(acc);ul.appendChild(li);
     });
     div.appendChild(ul);
@@ -180,17 +187,17 @@ function dibujar(){
       var n=inp.value;
       if(n&&n.trim()&&datos[i].length<MAX){datos[i].push({n:n.trim(),p:dp.value||hoy(),c:dc.value||hoy()});guardar();dibujar();}
     };
-    div.appendChild(inp);lp.appendChild(dp);lc.appendChild(dc);div.appendChild(lp);div.appendChild(lc);div.appendChild(a);inp.onkeydown=function(ev){if(ev.key==="Enter"&&a.onclick)a.onclick();};
+    if(PE){div.appendChild(inp);lp.appendChild(dp);lc.appendChild(dc);div.appendChild(lp);div.appendChild(lc);div.appendChild(a);inp.onkeydown=function(ev){if(ev.key==="Enter"&&a.onclick)a.onclick();};}
     cont.appendChild(div);
   });
   document.getElementById("resumen").textContent="Capacidad "+(N*MAX)+" · Ocupados "+total+" · Libres "+(N*MAX-total);buscar();renderFaj();
 }
 document.getElementById("vaciar").onclick=function(){
-  var bt=document.getElementById("vaciar");if(bt.dataset.ok){datos=[];for(var i=0;i<N;i++)datos.push([]);guardar();dibujar();bt.dataset.ok="";bt.textContent="Vaciar todo";}else{bt.dataset.ok="1";bt.textContent="Tocá de nuevo para vaciar TODO";setTimeout(function(){bt.dataset.ok="";bt.textContent="Vaciar todo";},3000);}
+  if(!puedeEditar()){est("Solo un administrador con conexión puede vaciar los datos.","no");return;}var bt=document.getElementById("vaciar");if(bt.dataset.ok){datos=[];for(var i=0;i<N;i++)datos.push([]);guardar();dibujar();bt.dataset.ok="";bt.textContent="Vaciar todo";}else{bt.dataset.ok="1";bt.textContent="Tocá de nuevo para vaciar TODO";setTimeout(function(){bt.dataset.ok="";bt.textContent="Vaciar todo";},3000);}
 };
 dibujar();
 document.getElementById('bk').onclick=function(){var t=JSON.stringify(datos),a=document.getElementById('rt');document.getElementById('resp').style.display='block';a.value=t;a.select();try{navigator.clipboard.writeText(t);}catch(e){}};
-document.getElementById('rok').onclick=function(){try{var d=JSON.parse(document.getElementById('rt').value);if(Array.isArray(d)&&d.length===N){datos=d;guardar();dibujar();document.getElementById('resp').style.display='none';}}catch(e){}};
+document.getElementById('rok').onclick=function(){if(!puedeEditar()){est('Solo un administrador con conexión puede restaurar.','no');return;}try{var d=JSON.parse(document.getElementById('rt').value);if(Array.isArray(d)&&d.length===N){datos=d;guardar();dibujar();document.getElementById('resp').style.display='none';}}catch(e){}};
 document.getElementById('rno').onclick=function(){document.getElementById('resp').style.display='none';};
 try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();}catch(e){}
 if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
@@ -232,6 +239,58 @@ document.addEventListener("visibilitychange",function(){if(document.hidden){ocul
 document.getElementById("bl").onclick=function(){mostrarLock(guardado()?"ask":"new");};
 document.getElementById("cc").onclick=function(){mostrarLock("new");};
 mostrarLock(guardado()?"ask":"new");
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function est(t,c){MSG=t;CLS=c||"";renderSync();}
+function renderSync(){
+  var s=document.getElementById("sst");if(!s)return;
+  s.innerHTML='<span class="'+CLS+'">'+esc(MSG)+'</span> · '+(ADM?"Administrador":"Modo lectura")+' <button onclick="'+(ADM?"admSalir()":"admForm()")+'">'+(ADM?"Salir de admin":"Soy administrador")+'</button>';
+}
+function admForm(){
+  document.getElementById("sfm").innerHTML='<input id="adn" placeholder="Tu nombre (opcional, para saber quién guardó)" maxlength="40" value="'+esc(ADN)+'"><div style="position:relative"><input id="adk" type="password" placeholder="Clave de administrador" autocapitalize="none" autocorrect="off" spellcheck="false" style="padding-right:46px"><button type="button" onclick="verAdk()" style="position:absolute;right:2px;top:2px;background:none;font-size:20px">\ud83d\udc41</button></div><div class="no" id="ade"></div><button onclick="admOk()">Entrar como administrador</button><button onclick="admCancel()">Cancelar</button>';
+}
+function verAdk(){var e=document.getElementById("adk");e.type=e.type==="password"?"text":"password";}
+function admCancel(){document.getElementById("sfm").innerHTML="";}
+function admOk(){
+  var k=document.getElementById("adk").value,n=document.getElementById("adn").value.trim(),e=document.getElementById("ade");
+  if(!k){e.textContent="Escribí la clave.";return;}
+  e.textContent="Verificando…";
+  fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({accion:"verificar",clave:k})}).then(function(r){return r.json().then(function(j){return {s:r.status,j:j};});}).then(function(x){
+    if(x.s===200){ADM=k;ADN=n;try{localStorage.setItem("pabellon:adm",k);localStorage.setItem("pabellon:adn",n);}catch(_e){}document.getElementById("sfm").innerHTML="";est("Clave correcta. Ya podés editar.","ok");dibujar();pull();}
+    else e.textContent=(x.j&&x.j.error)||"No se pudo verificar.";
+  }).catch(function(){e.textContent="Sin conexión con el servidor.";});
+}
+function admSalir(){ADM="";try{localStorage.removeItem("pabellon:adm");}catch(e){}est("Saliste del modo administrador.","");dibujar();}
+function nc(c){var r=[];for(var i=0;i<N;i++)r.push(Array.isArray(c)&&Array.isArray(c[i])?c[i]:[]);return r;}
+function ocupado(){var f=document.getElementById("ficha");return !!((f&&f.classList.contains("on"))||moviendo);}
+function pull(){
+  if(BUSY||PEND)return;
+  var was=OK;
+  return fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({accion:"leer"})}).then(function(r){if(!r.ok)throw new Error("http");return r.json();}).then(function(j){
+    var s=j.datos||{},v=s.v||0,cambio=false;OK=true;
+    if(v!==SV){
+      if(ocupado()){est("Hay cambios nuevos de otro administrador; se cargarán al terminar lo que estás haciendo.","");if(!was)dibujar();return;}
+      datos=nc(s.celdas);SV=v;persist();cambio=true;
+    }
+    est("Sincronizado · versión "+SV+(s.por?" · último cambio de "+s.por:""),"ok");
+    if(cambio||!was)dibujar();
+  }).catch(function(){var antes=OK;OK=false;est("Sin conexión: se muestran los últimos datos. No se puede editar.","no");if(antes)dibujar();});
+}
+function programar(){PEND=true;est("Guardando…","");clearTimeout(TMR);TMR=setTimeout(push,600);}
+function push(){
+  if(!ADM){PEND=false;return;}
+  BUSY=true;
+  fetch(API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({base:SV,clave:ADM,celdas:datos,por:ADN})}).then(function(r){return r.json().then(function(j){return {s:r.status,j:j};});}).then(function(x){
+    BUSY=false;PEND=false;
+    if(x.s===200){SV=x.j.v;persist();OK=true;est("Guardado y sincronizado · versión "+SV,"ok");return;}
+    if(x.s===409){var s=x.j.datos||{};datos=nc(s.celdas);SV=s.v||0;persist();dibujar();est("Otro administrador guardó antes que vos: se cargaron sus datos. Repetí tu cambio.","no");return;}
+    if(x.s===401){ADM="";try{localStorage.removeItem("pabellon:adm");}catch(e){}SV=-1;est("La clave de administrador ya no es válida. Volvé a ingresarla.","no");dibujar();pull();return;}
+    SV=-1;est("El servidor rechazó el cambio: "+((x.j&&x.j.error)||"error")+". Se recargan los datos.","no");pull();
+  }).catch(function(){BUSY=false;PEND=false;OK=false;SV=-1;est("Sin conexión: el cambio NO se guardó. Al volver la conexión se recargan los datos del servidor.","no");dibujar();});
+}
+renderSync();pull();setInterval(pull,10000);
+window.addEventListener("online",pull);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)pull();});
 </script>
 </body>
 </html>
